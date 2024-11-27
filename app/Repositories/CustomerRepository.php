@@ -29,4 +29,18 @@ class CustomerRepository
     {
         $customer->delete();
     }
+    public function getAllPaginated($perPage = 10)
+    {
+        return Customer::paginate($perPage);
+    }
+    public function search($search, $perPage = 10)
+    {
+        return Customer::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(DB::raw('LOWER(name)'), 'LIKE', '%' . strtolower($search) . '%')
+                    ->orWhere(DB::raw('LOWER(email)'), 'LIKE', '%' . strtolower($search) . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
 }

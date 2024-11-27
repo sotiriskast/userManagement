@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => 'root@root.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => 'user@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),

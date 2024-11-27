@@ -1,25 +1,16 @@
 <?php
 namespace App\Repositories;
+use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 
 class TransactionRepository
 {
-    public function getAll()
-    {
-        return Transaction::with('customer')->get();
-    }
-
-    public function findById($id)
-    {
-        return Transaction::with('customer')->findOrFail($id);
-    }
 
     public function create(array $data)
     {
         return Transaction::create($data);
     }
-
     public function update(Transaction $transaction, array $data)
     {
         $transaction->update($data);
@@ -31,32 +22,26 @@ class TransactionRepository
         $transaction->delete();
     }
 
-    public function getFilteredTransactions($filters)
+    public function search($filters, $perPage = 10)
     {
-        $query = Transaction::with('customer');
-
-        if (isset($filters['date'])) {
-            $query->whereDate('transaction_date', $filters['date']);
-        }
-
-        if (isset($filters['email'])) {
-            $query->whereHas('customer', function ($q) use ($filters) {
-                $q->where('email', 'like', '%' . $filters['email'] . '%');
-            });
-        }
-
-        if (isset($filters['currency'])) {
-            $query->where('currency', $filters['currency']);
-        }
-
-        return $query->get();
+        return Transaction::with('customer')
+            ->when($filters['search'] ?? null, function ($query, $search) {
+                $query->whereHas('customer', function ($customerQuery) use ($search) {
+                    $customerQuery->where(DB::raw('LOWER(name)'), 'LIKE', '%' . strtolower($search) . '%');
+                });
+            })
+            ->when($filters['date'] ?? null, function ($query, $date) {
+                $query->whereDate('transaction_date', $date);
+            })
+            ->when($filters['currency'] ?? null, function ($query, $currency) {
+                $query->where(DB::raw('LOWER(currency)'), '=', strtolower($currency));
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 
-    public function getTransactionCountByCountry()
+    public function getAllCustomers()
     {
-        return Transaction::join('customers', 'transactions.client_id', '=', 'customers.client_id')
-            ->select('customers.country', DB::raw('count(*) as total'))
-            ->groupBy('customers.country')
-            ->get();
+        return Customer::all();
     }
 }

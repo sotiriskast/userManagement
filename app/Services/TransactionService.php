@@ -12,17 +12,6 @@ class TransactionService
     {
         $this->transactionRepository = $transactionRepository;
     }
-
-    public function getAllTransactions()
-    {
-        return $this->transactionRepository->getAll();
-    }
-
-    public function getTransactionById($id)
-    {
-        return $this->transactionRepository->findById($id);
-    }
-
     public function createTransaction(array $data)
     {
         return $this->transactionRepository->create($data);
@@ -37,14 +26,13 @@ class TransactionService
     {
         $this->transactionRepository->delete($transaction);
     }
-
-    public function getFilteredTransactions(array $filters)
+    public function searchTransactions($filters, $perPage = 10)
     {
-        return $this->transactionRepository->getFilteredTransactions($filters);
+        return $this->transactionRepository->search($filters, $perPage);
     }
 
-    public function getTransactionCountByCountry()
+    public function getAllCustomers()
     {
-        return $this->transactionRepository->getTransactionCountByCountry();
+        return $this->transactionRepository->getAllCustomers();
     }
 }

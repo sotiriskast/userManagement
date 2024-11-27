@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
+use App\Models\Customer;
 use App\Models\Transaction;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -18,21 +20,24 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->only(['date', 'email', 'currency']);
-        $transactions = $this->transactionService->getFilteredTransactions($filters);
-        $countryData = $this->transactionService->getTransactionCountByCountry();
-        return view('transactions.index', compact('transactions', 'countryData'));
+        $filters = $request->only(['search', 'date', 'currency']);
+        $transactions = $this->transactionService->searchTransactions($filters, 10);
+
+        return view('transactions.index', compact('transactions'));
     }
 
     public function create()
     {
-        return view('transactions.create');
+        $customers = $this->transactionService->getAllCustomers();
+        return view('transactions.create', compact('customers'));
     }
 
     public function store(TransactionRequest $request)
     {
-        $transaction = $this->transactionService->createTransaction($request->validated());
-        return redirect()->route('transactions.index')->with('success', 'Transaction created successfully');
+        $test = 'test';
+
+        $this->transactionService->createTransaction($request->validated());
+        return redirect()->route('transactions.index')->with('success', 'Transaction added successfully!');
     }
 
     public function show(Transaction $transaction)
@@ -47,8 +52,19 @@ class TransactionController extends Controller
 
     public function update(TransactionRequest $request, Transaction $transaction)
     {
-        $this->transactionService->updateTransaction($transaction, $request->validated());
-        return redirect()->route('transactions.index')->with('success', 'Transaction updated successfully');
+        try {
+            $this->transactionService->updateTransaction($transaction, $request->validated());
+            return redirect()
+                ->route('transactions.index')
+                ->with('type', 'success')
+                ->with('message', 'Transaction updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('type', 'error')
+                ->with('message', 'Failed to update transaction. Please try again.');
+        }
     }
 
     public function destroy(Transaction $transaction)

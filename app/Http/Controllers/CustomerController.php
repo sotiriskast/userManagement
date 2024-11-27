@@ -16,9 +16,10 @@ class CustomerController extends Controller
         $this->customerService = $customerService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $customers = $this->customerService->getAllCustomers();
+        $search = $request->get('search');
+        $customers = $this->customerService->searchCustomers($search, 10);
         return view('customers.index', compact('customers'));
     }
 
@@ -29,8 +30,19 @@ class CustomerController extends Controller
 
     public function store(CustomerRequest $request)
     {
-        $customer = $this->customerService->createCustomer($request->validated());
-        return redirect()->route('customers.index')->with('success', 'Customer created successfully');
+        try {
+            $this->customerService->createCustomer($request->validated());
+            return redirect()
+                ->route('customers.index')
+                ->with('type', 'success')
+                ->with('message', 'Customer added successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('type', 'error')
+                ->with('message', 'Failed to add customer. Please try again.');
+        }
     }
 
     public function show(Customer $customer)
@@ -45,8 +57,19 @@ class CustomerController extends Controller
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        $this->customerService->updateCustomer($customer, $request->validated());
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully');
+        try {
+            $this->customerService->updateCustomer($customer, $request->validated());
+            return redirect()
+                ->route('customers.index')
+                ->with('type', 'success')
+                ->with('message', 'Customer updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('type', 'error')
+                ->with('message', 'Failed to update customer. Please try again.');
+        }
     }
 
     public function destroy(Customer $customer)

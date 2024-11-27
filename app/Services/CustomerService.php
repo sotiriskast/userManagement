@@ -11,7 +11,10 @@ class CustomerService
     {
         $this->customerRepository = $customerRepository;
     }
-
+    public function searchCustomers($search, $perPage = 10)
+    {
+        return $this->customerRepository->search($search, $perPage);
+    }
     public function getAllCustomers()
     {
         return $this->customerRepository->getAll();
@@ -35,6 +38,10 @@ class CustomerService
     public function deleteCustomer(Customer $customer)
     {
         $this->customerRepository->delete($customer);
+    }
+    public function getAllPaginatedCustomers($perPage = 10)
+    {
+        return $this->customerRepository->getAllPaginated($perPage);
     }
 }
 
