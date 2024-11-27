@@ -30,6 +30,7 @@
 
             <!-- Page Content -->
             <main>
+                <x-flash-message :type="session('type')" :message="session('message')" />
                 {{ $slot }}
             </main>
         </div>

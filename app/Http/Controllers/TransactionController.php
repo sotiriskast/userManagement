@@ -17,7 +17,6 @@ class TransactionController extends Controller
     {
         $this->transactionService = $transactionService;
     }
-
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'date', 'currency']);
@@ -25,31 +24,38 @@ class TransactionController extends Controller
 
         return view('transactions.index', compact('transactions'));
     }
-
     public function create()
     {
         $customers = $this->transactionService->getAllCustomers();
-        return view('transactions.create', compact('customers'));
-    }
-
+        return view('transactions.create', compact('customers'));    }
     public function store(TransactionRequest $request)
     {
-        $test = 'test';
+$test='test';
+        try {
+            $this->transactionService->createTransaction($request->validated());
+            dd(DB::getQueryLog());
 
-        $this->transactionService->createTransaction($request->validated());
+            return redirect()
+                ->route('transactions.index')
+                ->with('type', 'success')
+                ->with('message', 'Transaction created successfully!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('type', 'error')
+                ->with('message', 'Failed to create transaction. Please try again.');
+        }
         return redirect()->route('transactions.index')->with('success', 'Transaction added successfully!');
     }
-
     public function show(Transaction $transaction)
     {
         return view('transactions.show', compact('transaction'));
     }
-
     public function edit(Transaction $transaction)
     {
         return view('transactions.edit', compact('transaction'));
     }
-
     public function update(TransactionRequest $request, Transaction $transaction)
     {
         try {
@@ -64,9 +70,7 @@ class TransactionController extends Controller
                 ->withInput()
                 ->with('type', 'error')
                 ->with('message', 'Failed to update transaction. Please try again.');
-        }
-    }
-
+        }    }
     public function destroy(Transaction $transaction)
     {
         $this->transactionService->deleteTransaction($transaction);
