@@ -22,9 +22,9 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:customers,client_id',
+            'customer_id' => 'required|exists:customers,id',
             'amount' => 'required|numeric|min:0',
-            'currency_id' => 'required|exists:currencies,id', // Ensure valid currency
+            'currency_id' => 'required|exists:currencies,id',
             'transaction_date' => [
                 'required',
                 'date',
@@ -38,8 +38,6 @@ class TransactionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'client_id.required' => 'A customer is required for this transaction.',
-            'client_id.exists' => 'The selected customer does not exist.',
             'amount.required' => 'The transaction amount is required.',
             'amount.numeric' => 'The amount must be a valid number.',
             'amount.min' => 'The amount cannot be less than zero.',

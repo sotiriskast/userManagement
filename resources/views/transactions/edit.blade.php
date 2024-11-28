@@ -14,12 +14,11 @@
                     @if(isset($transaction))
                         @method('PUT')
                     @endif
-
                     <!-- Customer Dropdown -->
-                    <x-select name="client_id" label="Customer" :placeholder="'Select a Customer'">
+                    <x-select name="customer_id" label="Customer" :placeholder="'Select a Customer'">
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->client_id }}"
-                                {{ old('client_id', $transaction->client_id ?? '') === $customer->client_id ? 'selected' : '' }}>
+                            <option value="{{ $customer->id }}"
+                                {{ old('customer_id', $transaction->customer_id ?? '') == $customer->id ? 'selected' : '' }}>
                                 {{ $customer->name }}
                             </option>
                         @endforeach
@@ -27,13 +26,13 @@
 
                     <!-- Amount Input -->
                     <x-input name="amount" label="Amount" type="number"
-                             :value="old('amount', $transaction->amount ?? '')" />
+                             :value="old('amount', $transaction->amount ?? '')"/>
 
                     <!-- Currency Dropdown -->
-                    <x-select name="currency" label="Currency" :placeholder="'Select a Currency'">
+                    <x-select name="currency_id" label="Currency" :placeholder="'Select a Currency'">
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->code }}"
-                                {{ old('currency', $transaction->currency ?? '') === $currency->code ? 'selected' : '' }}>
+                            <option value="{{ $currency->id }}"
+                                {{ (int) old('currency_id', $transaction->currency_id ?? '') === $currency->id ? 'selected' : '' }}>
                                 {{ $currency->name }} ({{ $currency->code }})
                             </option>
                         @endforeach
@@ -41,7 +40,7 @@
 
                     <!-- Transaction Date -->
                     <x-input name="transaction_date" label="Transaction Date" type="date"
-                             :value="old('transaction_date', $transaction->transaction_date ?? '')" />
+                             :value="old('transaction_date', $transaction->transaction_date ?? '')"/>
 
                     <!-- Submit Button -->
                     <div class="mt-6">

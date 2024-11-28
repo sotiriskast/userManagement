@@ -5,15 +5,16 @@ use App\Repositories\Contracts\CustomerRepositoryInterface;
 
 class CustomerService
 {
-    protected $customerRepositoryInterface;
+    protected CustomerRepositoryInterface $customerRepositoryInterface;
 
     public function __construct(CustomerRepositoryInterface $customerRepositoryInterface)
     {
         $this->customerRepositoryInterface = $customerRepositoryInterface;
     }
-    public function searchCustomers($search, $perPage = 10)
+    public function searchCustomers($filters, $perPage = 10)
+
     {
-        return $this->customerRepositoryInterface->search($search, $perPage);
+        return $this->customerRepositoryInterface->search($filters, $perPage);
     }
     public function getAllCustomers()
     {
@@ -25,17 +26,17 @@ class CustomerService
         return $this->customerRepositoryInterface->findById($id);
     }
 
-    public function createCustomer(array $data)
+    public function createCustomer(array $data): Customer
     {
         return $this->customerRepositoryInterface->create($data);
     }
 
-    public function updateCustomer(Customer $customer, array $data)
+    public function updateCustomer(Customer $customer, array $data): Customer
     {
         return $this->customerRepositoryInterface->update($customer, $data);
     }
 
-    public function deleteCustomer(Customer $customer)
+    public function deleteCustomer(Customer $customer): void
     {
         $this->customerRepositoryInterface->delete($customer);
     }

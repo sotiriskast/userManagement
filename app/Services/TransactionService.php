@@ -3,26 +3,27 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class TransactionService
 {
-    protected $transactionRepositoryInterface;
+    protected TransactionRepositoryInterface $transactionRepositoryInterface;
 
     public function __construct(TransactionRepositoryInterface $transactionRepositoryInterface)
     {
         $this->transactionRepositoryInterface = $transactionRepositoryInterface;
     }
-    public function createTransaction(array $data)
+    public function createTransaction(array $data): Transaction
     {
         return $this->transactionRepositoryInterface->create($data);
     }
 
-    public function updateTransaction(Transaction $transaction, array $data)
+    public function updateTransaction(Transaction $transaction, array $data): Transaction
     {
         return $this->transactionRepositoryInterface->update($transaction, $data);
     }
 
-    public function deleteTransaction(Transaction $transaction)
+    public function deleteTransaction(Transaction $transaction): void
     {
         $this->transactionRepositoryInterface->delete($transaction);
     }
@@ -31,7 +32,7 @@ class TransactionService
         return $this->transactionRepositoryInterface->search($filters, $perPage);
     }
 
-    public function getAllCustomers()
+    public function getAllCustomers(): Collection
     {
         return $this->transactionRepositoryInterface->getAllCustomers();
     }

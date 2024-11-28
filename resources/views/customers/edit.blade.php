@@ -24,8 +24,22 @@
                     <x-input name="ip_address" label="IP Address" :value="$customer->ip_address ?? null" />
 
                     <!-- Country Input -->
-                    <x-input name="country" label="Country" :value="$customer->country ?? null" />
-
+                    <div class="mb-4">
+                        <label for="country_id" class="block text-sm font-medium text-gray-700">Country</label>
+                        <select name="country_id" id="country_id" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded shadow-sm focus:ring focus:ring-blue-300 focus:outline-none">
+                            <option value="">Select a Country</option>
+                            @foreach ($countries as $country)
+                                <option value="{{ $country->id }}"
+                                    {{ (int) old('country_id', $customer->country_id ?? '') === $country->id ? 'selected' : '' }}>
+                                    {{ $country->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('country_id')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <!-- Submit Button -->
                     <div class="mt-6">
                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow">

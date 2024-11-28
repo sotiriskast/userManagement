@@ -20,7 +20,11 @@
                         </div>
                         <div>
                             <strong>Client ID:</strong>
-                            <p>{{ $transaction->client_id }}</p>
+                            <p>{{ $transaction->customer->client_id }}</p>
+                        </div>
+                        <div>
+                            <strong>Client Name:</strong>
+                            <p>{{ $transaction->customer->name }}</p>
                         </div>
                         <div>
                             <strong>Amount:</strong>
@@ -28,7 +32,7 @@
                         </div>
                         <div>
                             <strong>Currency:</strong>
-                            <p>{{ $transaction->currency }}</p>
+                            <p>{{ $transaction->currency->name .' ('.$transaction->currency->code.')' }}</p>
                         </div>
                         <div>
                             <strong>Date:</strong>

@@ -30,8 +30,8 @@ class TransactionController extends Controller
     {
         $filters = $request->only(['search', 'date', 'currency']);
         $transactions = $this->transactionService->searchTransactions($filters, 10);
-
-        return view('transactions.index', compact('transactions'));
+        $currencies = $this->currencyService->getAllCurrencies();
+        return view('transactions.index', compact('transactions', 'currencies'));
     }
 
     public function create()

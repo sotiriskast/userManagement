@@ -5,7 +5,7 @@ use App\Repositories\Contracts\CurrencyRepositoryInterface;
 
 class CurrencyService
 {
-    protected $currencyRepositoryInterface;
+    protected CurrencyRepositoryInterface $currencyRepositoryInterface;
 
     public function __construct(CurrencyRepositoryInterface $currencyRepositoryInterface)
     {

@@ -3,7 +3,9 @@
     <select
         id="{{ $name }}"
         name="{{ $name }}"
-        {{ $attributes->merge(['class' => 'w-full px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-300 focus:outline-none' . ($errors->has($name) ? ' border-red-500' : '')]) }}
+        {{ $attributes->merge([
+            'class' => 'w-full px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-300 focus:outline-none' . ($errors->has($name) ? ' border-red-500' : ' border-gray-300')
+        ]) }}
     >
         <option value="">{{ $placeholder ?? 'Select an option' }}</option>
         {{ $slot }}

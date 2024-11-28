@@ -32,8 +32,15 @@
                             </div>
                             <div>
                                 <label for="currency" class="block text-sm font-medium text-gray-700">Currency</label>
-                                <input type="text" name="currency" id="currency" class="w-full px-4 py-2 border border-gray-300 rounded shadow-sm focus:ring focus:ring-blue-300 focus:outline-none"
-                                       value="{{ request('currency') }}">
+                                <select name="currency" class="w-full px-4 py-2 border border-gray-300 rounded shadow-sm focus:ring focus:ring-blue-300 focus:outline-none">
+                                    <option value="">All Currencies</option>
+                                    @foreach ($currencies as $currency)
+                                        <option value="{{ $currency->code }}"
+                                            {{ request('currency') == $currency->code ? 'selected' : '' }}>
+                                            {{ $currency->name }} ({{ $currency->code }})
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="mt-4">
@@ -49,7 +56,7 @@
                     <table class="min-w-full bg-white">
                         <thead class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
                         <tr>
-                            <th class="py-3 px-6 text-left">Client ID</th>
+                            <th class="py-3 px-6 text-left">Transaction ID</th>
                             <th class="py-3 px-6 text-left">Name</th>
                             <th class="py-3 px-6 text-left">Amount</th>
                             <th class="py-3 px-6 text-left">Currency</th>
@@ -60,12 +67,12 @@
                         <tbody class="text-gray-600 text-sm font-light">
                         @forelse ($transactions as $transaction)
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ $transaction->client_id }}</td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ $transaction->id }}</td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap">
                                     {{ $transaction->customer->name ?? 'Unknown Customer' }}
                                 </td>
                                 <td class="py-3 px-6 text-left">{{ $transaction->amount }}</td>
-                                <td class="py-3 px-6 text-left">{{ $transaction->currency }}</td>
+                                <td class="py-3 px-6 text-left">{{ $transaction->currency->name }} ({{ $transaction->currency->code }})</td>
                                 <td class="py-3 px-6 text-left">{{ $transaction->transaction_date }}</td>
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex item-center justify-center space-x-2">

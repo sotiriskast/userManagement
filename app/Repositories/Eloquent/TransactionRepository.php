@@ -3,6 +3,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\Customer;
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -24,9 +25,9 @@ class TransactionRepository implements TransactionRepositoryInterface
         $transaction->delete();
     }
 
-    public function search($filters, $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function search($filters, $perPage = 10): LengthAwarePaginator
     {
-        return Transaction::with('customer')
+        return Transaction::with('customer', 'currency')
             ->when($filters['search'] ?? null, function ($query, $search) {
                 $query->whereHas('customer', function ($customerQuery) use ($search) {
                     $customerQuery->where(DB::raw('LOWER(name)'), 'LIKE', '%' . strtolower($search) . '%');
@@ -36,7 +37,9 @@ class TransactionRepository implements TransactionRepositoryInterface
                 $query->whereDate('transaction_date', $date);
             })
             ->when($filters['currency'] ?? null, function ($query, $currency) {
-                $query->where(DB::raw('LOWER(currency)'), 'LIKE', '%' . strtolower($currency). '%');
+                $query->whereHas('currency', function ($currencyQuery) use ($currency) {
+                    $currencyQuery->where(DB::raw('LOWER(code)'), 'LIKE', '%' . strtolower($currency) . '%');
+                });
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);

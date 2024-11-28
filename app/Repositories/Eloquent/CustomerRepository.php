@@ -1,12 +1,16 @@
 <?php
+
 namespace App\Repositories\Eloquent;
+
 use App\Models\Customer;
 use App\Repositories\Contracts\CustomerRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class CustomerRepository implements CustomerRepositoryInterface
 {
-    public function getAll()
+    public function getAll(): Collection
     {
         return Customer::all();
     }
@@ -31,18 +35,28 @@ class CustomerRepository implements CustomerRepositoryInterface
     {
         $customer->delete();
     }
+
     public function getAllPaginated($perPage = 10)
     {
         return Customer::paginate($perPage);
     }
-    public function search($search, $perPage = 10)
+
+    public function search($filters, $perPage = 10): LengthAwarePaginator
     {
-        return Customer::query()
-            ->when($search, function ($query) use ($search) {
-                $query->where(DB::raw('LOWER(name)'), 'LIKE', '%' . strtolower($search) . '%')
-                    ->orWhere(DB::raw('LOWER(email)'), 'LIKE', '%' . strtolower($search) . '%');
+        return Customer::with('country')
+            ->when($filters['search'] ?? null, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where(DB::raw('LOWER(name)'), 'LIKE', '%' . strtolower($search) . '%')
+                        ->orWhere(DB::raw('LOWER(email)'), 'LIKE', '%' . strtolower($search) . '%');
+                });
+            })
+            ->when($filters['country'] ?? null, function ($query, $country) {
+                $query->whereHas('country', function ($countryQuery) use ($country) {
+                    $countryQuery->where('id', $country);
+                });
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
+
 }

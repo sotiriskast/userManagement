@@ -4,29 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
+use App\Services\CountryService;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class CustomerController extends Controller
 {
-    protected $customerService;
+    protected CustomerService $customerService;
+    protected CountryService $countryService;
 
-    public function __construct(CustomerService $customerService)
+    public function __construct(CustomerService $customerService, CountryService $countryService)
     {
         $this->customerService = $customerService;
+        $this->countryService = $countryService;
     }
 
     public function index(Request $request)
     {
-        $search = $request->get('search');
-        $customers = $this->customerService->searchCustomers($search, 10);
-        return view('customers.index', compact('customers'));
+        $filters = $request->only(['search', 'country']);
+        $customers = $this->customerService->searchCustomers($filters, 10);
+        $countries = $this->countryService->getAllCountries();
+        return view('customers.index', compact('customers', 'countries'));
     }
 
     public function create()
     {
-        return view('customers.create');
+        $countries=$this->countryService->getAllCountries();
+        return view('customers.create', compact('countries'));
     }
 
     public function store(CustomerRequest $request)
@@ -45,7 +50,8 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        return view('customers.edit', compact('customer'));
+        $countries=$this->countryService->getAllCurrencies();
+        return view('customers.edit', compact('customer', 'countries'));
     }
 
     public function update(CustomerRequest $request, Customer $customer)

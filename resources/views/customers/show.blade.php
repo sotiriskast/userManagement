@@ -32,7 +32,7 @@
                         </div>
                         <div>
                             <strong>Country:</strong>
-                            <p>{{ $customer->country }}</p>
+                            <p>{{ $customer->country->name }}</p>
                         </div>
                         <div>
                             <strong>Created At:</strong>
@@ -68,7 +68,7 @@
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6 text-left whitespace-nowrap">{{ $transaction->id }}</td>
                                 <td class="py-3 px-6 text-left">{{ $transaction->amount }}</td>
-                                <td class="py-3 px-6 text-left">{{ $transaction->currency }}</td>
+                                <td class="py-3 px-6 text-left">{{ $transaction->currency->name.' ('.$transaction->currency->code.')' }}</td>
                                 <td class="py-3 px-6 text-left">{{ $transaction->transaction_date }}</td>
                                 <td class="py-3 px-6 text-center">
                                     <a href="{{ route('transactions.show', $transaction) }}"

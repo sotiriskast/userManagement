@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,8 +22,7 @@ class CustomerFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'ip_address' => $this->faker->ipv4,
-            'country' => $this->faker->country
-
+            'country_id' => Country::query()->inRandomOrder()->first()->id,
         ];
     }
 }

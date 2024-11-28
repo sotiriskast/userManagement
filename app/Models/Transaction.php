@@ -10,11 +10,11 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id', 'amount', 'currency', 'transaction_date'];
+    protected $fillable = ['customer_id', 'amount', 'currency_id', 'transaction_date'];
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'client_id', 'client_id');
+        return $this->belongsTo(Customer::class);
     }
     public function currency(): BelongsTo
     {

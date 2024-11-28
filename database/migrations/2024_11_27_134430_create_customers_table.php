@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('ip_address');
-            $table->string('country');
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
+            $table->foreign('country_id')->references('id')->on('countries'); // Ensure currencies table exists
+
         });
     }
 

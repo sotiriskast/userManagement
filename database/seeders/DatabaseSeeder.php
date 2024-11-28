@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            CountrySeeder::class,
             CustomerSeeder::class,
             TransactionSeeder::class,
         ]);

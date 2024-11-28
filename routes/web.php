@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('role:Admin')->group(function () {
         Route::resource('transactions', TransactionController::class)->except(['index', 'show']);
     });
+    Route::middleware('role:super_admin')->resource('users', UserController::class);
+
 });
 
 require __DIR__.'/auth.php';

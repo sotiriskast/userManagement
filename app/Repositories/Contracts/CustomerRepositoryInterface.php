@@ -2,6 +2,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Customer;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface CustomerRepositoryInterface
 {
@@ -10,5 +11,5 @@ interface CustomerRepositoryInterface
     public function create(array $data): Customer;
     public function update(Customer $customer, array $data): Customer;
     public function delete(Customer $customer): void;
-    public function search(string $keyword, int $perPage = 10);
+    public function search($search, $perPage = 10): LengthAwarePaginator;
 }

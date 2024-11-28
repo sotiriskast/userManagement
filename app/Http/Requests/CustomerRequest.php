@@ -27,7 +27,7 @@ class CustomerRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => "required|email|unique:customers,email,{$customerId}",
             'ip_address' => 'required|ip',
-            'country' => 'required|string|max:255',
+            'country_id' => 'required|exists:countries,id',
         ];
     }
 
@@ -42,9 +42,8 @@ class CustomerRequest extends FormRequest
             'email.unique' => 'This email address is already in use.',
             'ip_address.required' => 'The IP address is required.',
             'ip_address.ip' => 'The IP address must be valid.',
-            'country.required' => 'The country is required.',
-            'country.string' => 'The country must be a valid string.',
-            'country.max' => 'The country may not exceed 255 characters.',
+            'country_id.required' => 'The country is required.',
+            'country_id.exists' => 'The selected country is invalid.',
         ];
     }
 

@@ -16,7 +16,7 @@ class TransactionSeeder extends Seeder
     {
         Customer::all()->each(function ($customer) {
             Transaction::factory(rand(1, 5))->create([
-                'client_id' => $customer->client_id,
+                'customer_id' => $customer->id,
             ]);
         });
     }
