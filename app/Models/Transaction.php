@@ -16,4 +16,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(Customer::class, 'client_id', 'client_id');
     }
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

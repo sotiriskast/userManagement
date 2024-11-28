@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,11 +22,10 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'client_id' => Customer::factory(),
-            'amount' => $this->faker->randomFloat(2, 10, 1000),
-            'currency' => $this->faker->currencyCode,
-            'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now')
-
+            'client_id' => Customer::factory()->create()->client_id, // Ensure client_id is from a created customer
+            'amount' => $this->faker->randomFloat(2, 10, 1000), // Random float between 10 and 1000
+            'currency_id' => Currency::query()->inRandomOrder()->first()->id, // Random currency_id
+            'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now'), // Date within the last year
         ];
     }
 }

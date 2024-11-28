@@ -1,31 +1,33 @@
 <?php
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 use App\Models\Customer;
+use App\Repositories\Contracts\CustomerRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
-class CustomerRepository
+class CustomerRepository implements CustomerRepositoryInterface
 {
     public function getAll()
     {
         return Customer::all();
     }
 
-    public function findById($id)
+    public function findById($id): ?Customer
     {
         return Customer::findOrFail($id);
     }
 
-    public function create(array $data)
+    public function create(array $data): Customer
     {
         return Customer::create($data);
     }
 
-    public function update(Customer $customer, array $data)
+    public function update(Customer $customer, array $data): Customer
     {
         $customer->update($data);
         return $customer;
     }
 
-    public function delete(Customer $customer)
+    public function delete(Customer $customer): void
     {
         $customer->delete();
     }

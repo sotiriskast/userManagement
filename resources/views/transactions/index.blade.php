@@ -11,10 +11,9 @@
                 <div class="p-6 bg-gray-100 border-b border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-gray-700">Transaction List</h3>
-                        <a href="{{ route('transactions.create') }}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded shadow">
+                        <x-role-button role="Admin" href="{{ route('transactions.create') }}">
                             + Add Transaction
-                        </a>
+                        </x-role-button>
                     </div>
 
                     <!-- Filter Form -->

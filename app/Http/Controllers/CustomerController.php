@@ -6,6 +6,7 @@ use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class CustomerController extends Controller
 {
@@ -30,19 +31,11 @@ class CustomerController extends Controller
 
     public function store(CustomerRequest $request)
     {
-        try {
-            $this->customerService->createCustomer($request->validated());
-            return redirect()
-                ->route('customers.index')
-                ->with('type', 'success')
-                ->with('message', 'Customer added successfully!');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('type', 'error')
-                ->with('message', 'Failed to add customer. Please try again.');
-        }
+        $this->customerService->createCustomer($request->validated());
+        return redirect()
+            ->route('customers.index')
+            ->with('type', 'success')
+            ->with('message', 'Customer added successfully!');
     }
 
     public function show(Customer $customer)
@@ -57,19 +50,11 @@ class CustomerController extends Controller
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        try {
-            $this->customerService->updateCustomer($customer, $request->validated());
-            return redirect()
-                ->route('customers.index')
-                ->with('type', 'success')
-                ->with('message', 'Customer updated successfully!');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('type', 'error')
-                ->with('message', 'Failed to update customer. Please try again.');
-        }
+        $this->customerService->updateCustomer($customer, $request->validated());
+        return redirect()
+            ->route('customers.index')
+            ->with('type', 'success')
+            ->with('message', 'Customer updated successfully!');
     }
 
     public function destroy(Customer $customer)

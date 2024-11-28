@@ -3,20 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
-use App\Models\Customer;
 use App\Models\Transaction;
+use App\Services\CurrencyService;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TransactionController extends Controller
 {
-    protected $transactionService;
+    use AuthorizesRequests;
 
-    public function __construct(TransactionService $transactionService)
+    protected $transactionService;
+    protected $currencyService;
+
+
+    public function __construct(TransactionService $transactionService, CurrencyService $currencyService)
     {
         $this->transactionService = $transactionService;
+        $this->currencyService = $currencyService;
+        $this->authorizeResource(Transaction::class, 'transaction');
+
     }
+
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'date', 'currency']);
@@ -24,53 +33,44 @@ class TransactionController extends Controller
 
         return view('transactions.index', compact('transactions'));
     }
+
     public function create()
     {
         $customers = $this->transactionService->getAllCustomers();
-        return view('transactions.create', compact('customers'));    }
+        $currencies = $this->currencyService->getAllCurrencies();
+        return view('transactions.create', compact('customers', 'currencies'));
+    }
+
     public function store(TransactionRequest $request)
     {
-$test='test';
-        try {
-            $this->transactionService->createTransaction($request->validated());
-            dd(DB::getQueryLog());
-
-            return redirect()
-                ->route('transactions.index')
-                ->with('type', 'success')
-                ->with('message', 'Transaction created successfully!');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('type', 'error')
-                ->with('message', 'Failed to create transaction. Please try again.');
-        }
-        return redirect()->route('transactions.index')->with('success', 'Transaction added successfully!');
+        $this->transactionService->createTransaction($request->validated());
+        return redirect()
+            ->route('transactions.index')
+            ->with('type', 'success')
+            ->with('message', 'Transaction created successfully!');
     }
+
     public function show(Transaction $transaction)
     {
         return view('transactions.show', compact('transaction'));
     }
+
     public function edit(Transaction $transaction)
     {
-        return view('transactions.edit', compact('transaction'));
+        $customers = $this->transactionService->getAllCustomers();
+        $currencies = $this->currencyService->getAllCurrencies();
+        return view('transactions.edit', compact('transaction', 'customers', 'currencies'));
     }
+
     public function update(TransactionRequest $request, Transaction $transaction)
     {
-        try {
-            $this->transactionService->updateTransaction($transaction, $request->validated());
-            return redirect()
-                ->route('transactions.index')
-                ->with('type', 'success')
-                ->with('message', 'Transaction updated successfully!');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('type', 'error')
-                ->with('message', 'Failed to update transaction. Please try again.');
-        }    }
+        $this->transactionService->updateTransaction($transaction, $request->validated());
+        return redirect()
+            ->route('transactions.index')
+            ->with('type', 'success')
+            ->with('message', 'Transaction updated successfully!');
+    }
+
     public function destroy(Transaction $transaction)
     {
         $this->transactionService->deleteTransaction($transaction);

@@ -38,26 +38,30 @@ class TransactionPolicy
      */
     public function update(User $user, Transaction $transaction): bool
     {
-        return $user->hasRole(UserRole::ADMIN->value);    }
+        return $user->hasRole(UserRole::ADMIN->value);
+    }
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Transaction $transaction): bool
     {
-        return $user->hasRole(UserRole::ADMIN->value);    }
+        return $user->hasRole(UserRole::ADMIN->value);
+    }
 
     /**
      * Determine whether the user can restore the model.
      */
     public function restore(User $user, Transaction $transaction): bool
     {
-        return $user->hasRole(UserRole::ADMIN->value);    }
+        return $user->hasRole(UserRole::ADMIN->value);
+    }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
     public function forceDelete(User $user, Transaction $transaction): bool
     {
-        return $user->hasRole(UserRole::ADMIN->value);    }
+        return $user->hasRole(UserRole::ADMIN->value);
+    }
 }

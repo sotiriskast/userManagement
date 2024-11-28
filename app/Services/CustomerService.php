@@ -1,47 +1,47 @@
 <?php
 namespace App\Services;
 use App\Models\Customer;
-use App\Repositories\CustomerRepository;
+use App\Repositories\Contracts\CustomerRepositoryInterface;
 
 class CustomerService
 {
-    protected $customerRepository;
+    protected $customerRepositoryInterface;
 
-    public function __construct(CustomerRepository $customerRepository)
+    public function __construct(CustomerRepositoryInterface $customerRepositoryInterface)
     {
-        $this->customerRepository = $customerRepository;
+        $this->customerRepositoryInterface = $customerRepositoryInterface;
     }
     public function searchCustomers($search, $perPage = 10)
     {
-        return $this->customerRepository->search($search, $perPage);
+        return $this->customerRepositoryInterface->search($search, $perPage);
     }
     public function getAllCustomers()
     {
-        return $this->customerRepository->getAll();
+        return $this->customerRepositoryInterface->getAll();
     }
 
     public function getCustomerById($id)
     {
-        return $this->customerRepository->findById($id);
+        return $this->customerRepositoryInterface->findById($id);
     }
 
     public function createCustomer(array $data)
     {
-        return $this->customerRepository->create($data);
+        return $this->customerRepositoryInterface->create($data);
     }
 
     public function updateCustomer(Customer $customer, array $data)
     {
-        return $this->customerRepository->update($customer, $data);
+        return $this->customerRepositoryInterface->update($customer, $data);
     }
 
     public function deleteCustomer(Customer $customer)
     {
-        $this->customerRepository->delete($customer);
+        $this->customerRepositoryInterface->delete($customer);
     }
     public function getAllPaginatedCustomers($perPage = 10)
     {
-        return $this->customerRepository->getAllPaginated($perPage);
+        return $this->customerRepositoryInterface->getAllPaginated($perPage);
     }
 }
 

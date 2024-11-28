@@ -4,19 +4,16 @@
             {{ __('Customers') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="p-6 bg-gray-100 border-b border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-gray-700">Customer List</h3>
-                        <a href="{{ route('customers.create') }}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded shadow">
+                        <x-role-button role="Admin" href="{{ route('transactions.create') }}">
                             + Add Customer
-                        </a>
+                        </x-role-button>
                     </div>
-
                     <!-- Search Bar -->
                     <form method="GET" action="{{ route('customers.index') }}" class="mb-4">
                         <div class="flex space-x-4">
@@ -28,9 +25,7 @@
                             </button>
                         </div>
                     </form>
-
                 </div>
-
                 <!-- Customer Table -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white">
@@ -88,8 +83,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Pagination -->
                 <div class="p-6 bg-gray-100 border-t border-gray-200">
                     {{ $customers->links() }}
                 </div>
