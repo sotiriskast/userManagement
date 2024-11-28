@@ -5,14 +5,14 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 
 class UserService
 {
-    protected $userRepository;
+    protected UserRepositoryInterface $userRepository;
 
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function getAllPaginatedUsers(int $perPage = 10)
+    public function getAllPaginatedUsers(int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return $this->userRepository->getAllPaginated($perPage);
     }
@@ -27,12 +27,12 @@ class UserService
         return $this->userRepository->create($data);
     }
 
-    public function updateUser(int $id, array $data)
+    public function updateUser(int $id, array $data): bool
     {
         return $this->userRepository->update($id, $data);
     }
 
-    public function deleteUser(int $id)
+    public function deleteUser(int $id): bool
     {
         return $this->userRepository->delete($id);
     }
