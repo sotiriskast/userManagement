@@ -1,57 +1,73 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
+use App\Services\RoleService;
 
 class UserController extends Controller
 {
-    protected $userService;
+    use AuthorizesRequests;
 
-    public function __construct(UserService $userService)
+    protected $userService;
+    protected $roleService;
+
+    public function __construct(UserService $userService,RoleService $roleService)
     {
+        $this->middleware('role:super_admin')->except(['index', 'show']);
         $this->userService = $userService;
+        $this->roleService = $roleService;
+
     }
 
     public function index()
     {
+        $this->authorize('viewAny', User::class);
         $users = $this->userService->getAllPaginatedUsers(10);
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
-        return view('users.create');
+        $roles = $this->roleService->getAllRoles(); // Fetch all roles
+        $this->authorize('create', User::class);
+        return view('users.create', compact('roles'));
     }
 
     public function store(UserRequest $request)
     {
-        $this->userService->createUser($request->validated());
+        $this->authorize('create', User::class);
+        $this->userService->createUserWithRole($request->validated(), $request->role);
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
     public function show(User $user)
     {
+        $this->authorize('view', $user);
         return view('users.show', compact('user'));
     }
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $roles = $this->roleService->getAllRoles();
+        $this->authorize('update', $user);
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(UserRequest $request, User $user)
     {
-        $this->userService->updateUser($user->id, $request->validated());
+        $this->authorize('update', $user); // Ensure the user has permission to edit
+        $this->userService->updateUserWithRole($user->id, $request->validated(), $request->role);
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
+        $this->authorize('delete', $user);
         $this->userService->deleteUser($user->id);
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
-    }}
+    }
+}

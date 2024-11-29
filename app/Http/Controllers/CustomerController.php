@@ -50,7 +50,7 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        $countries=$this->countryService->getAllCurrencies();
+        $countries=$this->countryService->getAllCountries();
         return view('customers.edit', compact('customer', 'countries'));
     }
 

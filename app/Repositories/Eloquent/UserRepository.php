@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\Eloquent;
 
 use App\Models\User;
@@ -38,4 +39,27 @@ class UserRepository implements UserRepositoryInterface
         $user = $this->findById($id);
         return $user->delete();
     }
+
+    public function createUserWithRole(array $data, int $roleId): mixed
+    {
+        $user = $this->create($data);
+        $user->roles()->sync([$roleId]); // Attach a single role
+        return $user;
+    }
+
+    public function updateUserWithRole(int $id, array $data,int $roleId): mixed
+    {
+        $user = User::findOrFail($id);
+
+        // Hash the password if provided
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']); // Remove password if it's not being updated
+        }
+        $user->update($data);
+        $user->roles()->sync([$roleId]);
+        return $user;
+    }
+
 }

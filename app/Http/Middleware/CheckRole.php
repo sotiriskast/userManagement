@@ -15,8 +15,15 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if (!auth()->check() || !auth()->user()->hasRole($role)) {
-            abort(Response::HTTP_FORBIDDEN, 'You do not have permission to access this page.');
+        if (!auth()->check()) {
+            abort(403, 'You do not have permission to access this page.');
+        }
+        if (auth()->user()->hasRole('super_admin')) {
+            return $next($request);
+        }
+        $role = strtolower($role);
+        if (!auth()->user()->hasRole($role)) {
+            abort(403, 'You do not have permission to access this page.');
         }
         return $next($request);
     }

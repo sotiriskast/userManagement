@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
 
         User::factory()->create([
             'name' => fake()->name(),
-            'email' => 'admin@root.com',
+            'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
         ])->roles()->attach($adminRole);
         User::factory()->create([
             'name' => fake()->name(),
-            'email' => 'user@root.com',
+            'email' => 'user@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),

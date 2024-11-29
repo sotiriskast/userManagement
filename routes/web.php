@@ -16,24 +16,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Customer Routes
-    Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
-
+    // Customer and Transaction routes for regular users
     Route::resource('customers', CustomerController::class)->only(['index', 'show']);
+    Route::resource('transactions', TransactionController::class)->only(['index', 'show']);
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
 
+    // Admin-only routes
     Route::middleware('role:Admin')->group(function () {
+        Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
         Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
         Route::resource('customers', CustomerController::class)->except(['index', 'show']);
-    });
-
-    // Transaction Routes
-    Route::resource('transactions', TransactionController::class)->only(['index', 'show']);
-
-    Route::middleware('role:Admin')->group(function () {
         Route::resource('transactions', TransactionController::class)->except(['index', 'show']);
+        Route::resource('users', UserController::class)->only(['index', 'show']);
     });
-    Route::middleware('role:super_admin')->resource('users', UserController::class);
+
+    // Super Admin-only routes
+    Route::middleware('role:super_admin')->group(function () {
+        Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
+        Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
+        Route::resource('customers', CustomerController::class)->except(['index', 'show']);
+        Route::resource('transactions', TransactionController::class)->except(['index', 'show']);
+        Route::resource('users', UserController::class)->except(['index', 'show']);
+    });
 
 });
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';

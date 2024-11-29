@@ -9,5 +9,7 @@ interface UserRepositoryInterface
     public function findById(int $id): mixed;
     public function create(array $data): mixed;
     public function update(int $id, array $data): bool;
+    public function createUserWithRole(array $data, int $roleId): mixed;
+    public function updateUserWithRole(int $id, array $data,int $roleId):mixed;
     public function delete(int $id): bool;
 }

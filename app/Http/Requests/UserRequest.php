@@ -26,7 +26,21 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $userId,
             'password' => $userId ? 'nullable|string|min:8|confirmed' : 'required|string|min:8|confirmed',
-
+            'role' => 'required|exists:roles,id', // Validate the role ID
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'The name is required.',
+            'email.required' => 'The email is required.',
+            'email.email' => 'Please provide a valid email.',
+            'email.unique' => 'This email is already taken.',
+            'password.min' => 'Password must be at least 8 characters.',
+            'password.confirmed' => 'Passwords do not match.',
+            'role.required' => 'A role must be selected.',
+            'role.exists' => 'Invalid role selected.',
+        ];
+    }
+
 }
