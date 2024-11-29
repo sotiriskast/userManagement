@@ -1,15 +1,13 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware(['auth', 'verified'])->group(function () {
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -19,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Customer and Transaction routes for regular users
     Route::resource('customers', CustomerController::class)->only(['index', 'show']);
     Route::resource('transactions', TransactionController::class)->only(['index', 'show']);
-    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create')->middleware('role:super_admin');
 
     // Admin-only routes
     Route::middleware('role:Admin')->group(function () {

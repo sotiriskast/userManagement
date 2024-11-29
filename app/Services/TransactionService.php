@@ -36,4 +36,8 @@ class TransactionService
     {
         return $this->transactionRepositoryInterface->getAllCustomers();
     }
+    public function getTransactionCountByCountry(): \Illuminate\Support\Collection
+    {
+        return $this->transactionRepositoryInterface->getTransactionCountByCountry();
+    }
 }

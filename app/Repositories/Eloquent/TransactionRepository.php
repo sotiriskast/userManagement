@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Repositories\Eloquent;
+
 use App\Models\Customer;
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
@@ -14,6 +16,7 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return Transaction::create($data);
     }
+
     public function update(Transaction $transaction, array $data): Transaction
     {
         $transaction->update($data);
@@ -48,5 +51,16 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function getAllCustomers(): Collection
     {
         return Customer::all();
+    }
+
+    public function getTransactionCountByCountry(): \Illuminate\Support\Collection
+    {
+        return DB::table('transactions')
+            ->join('customers', 'transactions.customer_id', '=', 'customers.id')
+            ->join('countries', 'customers.country_id', '=', 'countries.id')
+            ->select('countries.name as country', DB::raw('COUNT(transactions.id) as total'))
+            ->groupBy('countries.name')
+            ->orderBy('total', 'desc')
+            ->get();
     }
 }
