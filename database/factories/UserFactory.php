@@ -31,7 +31,26 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+    public function admin()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->roles()->attach(Role::where('name', 'admin')->first());
+        });
+    }
 
+    public function superAdmin()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->roles()->attach(Role::where('name', 'super_admin')->first());
+        });
+    }
+
+    public function regularUser()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->roles()->attach(Role::where('name', 'user')->first());
+        });
+    }
     /**
      * Indicate that the model's email address should be unverified.
      */
