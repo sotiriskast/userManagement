@@ -32,6 +32,18 @@
             const g = svg.append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+            // Create tooltip div
+            const tooltip = d3.select("#chart")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("position", "absolute")
+                .style("background-color", "white")
+                .style("border", "1px solid #ddd")
+                .style("padding", "10px")
+                .style("border-radius", "5px")
+                .style("pointer-events", "none");
+
             // Define scales
             const x = d3.scaleLinear()
                 .range([0, width - margin.left - margin.right]);
@@ -59,7 +71,7 @@
             g.append("g")
                 .call(d3.axisLeft(y));
 
-            // Add bars with colors
+            // Add bars with interactive features
             g.selectAll(".bar")
                 .data(transactionData)
                 .enter().append("rect")
@@ -68,14 +80,40 @@
                 .attr("height", y.bandwidth())
                 .attr("width", d => x(d.total))
                 .attr("y", d => y(d.country))
-                .attr("fill", d => color(d.country)); // Apply color to each bar
+                .attr("fill", d => color(d.country))
+                .on("mouseover", function(event, d) {
+                    // Highlight bar
+                    d3.select(this)
+                        .attr("opacity", 0.7);
+
+                    // Show tooltip
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`
+            <strong>${d.country}</strong><br>
+            Total Transactions: ${d.total.toLocaleString()}
+        `)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    // Restore original bar
+                    d3.select(this)
+                        .attr("opacity", 1);
+
+                    // Hide tooltip
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
 
             // Add X-axis label
             svg.append("text")
                 .attr("x", width / 2)
                 .attr("y", height - 10)
                 .attr("text-anchor", "middle")
-                .text("Country");
+                .text("Total Transactions");
 
             // Add Y-axis label
             svg.append("text")
@@ -83,7 +121,7 @@
                 .attr("y", 10)
                 .attr("x", 0 - (height / 2))
                 .attr("text-anchor", "middle")
-                .text("Total Transactions");
+                .text("Country");
         </script>
     @endpush
 </x-app-layout>

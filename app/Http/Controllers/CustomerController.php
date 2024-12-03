@@ -19,7 +19,7 @@ class CustomerController extends Controller
     public function __construct(CustomerService $customerService, CountryService $countryService)
     {
         $this->middleware('auth');
-        $this->authorizeResource(Customer::class, 'transaction');
+        $this->authorizeResource(Customer::class, 'customer');
         $this->customerService = $customerService;
         $this->countryService = $countryService;
     }
