@@ -23,9 +23,9 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'amount' => $this->faker->randomFloat(2, 10, 1000),
+            'amount' => $this->faker->randomFloat(2, 10, 10000),
             'currency_id' => Currency::query()->inRandomOrder()->first()->id,
-            'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'transaction_date' => $this->faker->dateTimeBetween('-1 year'),
         ];
     }
 }

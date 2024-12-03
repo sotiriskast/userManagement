@@ -11,7 +11,9 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = ['customer_id', 'amount', 'currency_id', 'transaction_date'];
-
+    protected $casts = [
+        'transaction_date' => 'date',
+    ];
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

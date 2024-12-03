@@ -11,7 +11,7 @@
                 <div class="p-6 bg-gray-100 border-b border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-gray-700">Transaction List</h3>
-                        <x-role-button role="Admin" href="{{ route('transactions.create') }}">
+                        <x-role-button role="admin" href="{{ route('transactions.create') }}">
                             + Add Transaction
                         </x-role-button>
                     </div>
@@ -73,7 +73,7 @@
                                 </td>
                                 <td class="py-3 px-6 text-left">{{ $transaction->amount }}</td>
                                 <td class="py-3 px-6 text-left">{{ $transaction->currency->name }} ({{ $transaction->currency->code }})</td>
-                                <td class="py-3 px-6 text-left">{{ $transaction->transaction_date }}</td>
+                                <td class="py-3 px-6 text-left">{{ $transaction->transaction_date->format('d/m/Y') }}</td>
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex item-center justify-center space-x-2">
                                         <a href="{{ route('transactions.show', $transaction) }}"

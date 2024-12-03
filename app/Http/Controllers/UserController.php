@@ -41,7 +41,8 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
         $this->userService->createUserWithRole($request->validated(), $request->role);
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('users.index') ->with('type', 'success')
+            ->with('message', 'Transaction user successfully!');
     }
 
     public function show(User $user)
@@ -61,7 +62,8 @@ class UserController extends Controller
     {
         $this->authorize('update', $user); // Ensure the user has permission to edit
         $this->userService->updateUserWithRole($user->id, $request->validated(), $request->role);
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('users.index') ->with('type', 'success')
+            ->with('message', 'User updated successfully!');
     }
 
     public function destroy(User $user)

@@ -17,24 +17,24 @@ class TransactionPolicy
         }
         return null;
     }
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('super_admin');
+        return true;
     }
-    public function view(User $user, Transaction $transaction): bool
+    public function view(): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('super_admin');
+        return true;
     }
     public function create(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('super_admin');
+        return $user->hasRole('admin');
     }
-    public function update(User $user, Transaction $transaction): bool
+    public function update(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('super_admin');
+        return $user->hasRole('admin');
     }
-    public function delete(User $user, Transaction $transaction): bool
+    public function delete(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('super_admin');
+        return $user->hasRole('admin');
     }
 }
