@@ -1,19 +1,19 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\Contracts\CountryRepositoryInterface;
+use App\Repositories\CountryRepository;
 
 class CountryService
 {
-    protected CountryRepositoryInterface $countryRepositoryInterface;
+    protected CountryRepository $countryRepository;
 
-    public function __construct(CountryRepositoryInterface $countryRepositoryInterface)
+    public function __construct(CountryRepository $countryRepository)
     {
-        $this->countryRepositoryInterface = $countryRepositoryInterface;
+        $this->countryRepository = $countryRepository;
     }
 
     public function getAllCountries()
     {
-        return $this->countryRepositoryInterface->getAll();
+        return $this->countryRepository->getAll();
     }
 }

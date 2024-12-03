@@ -12,7 +12,7 @@ class TransactionRequest extends FormRequest
     public function authorize(): bool
     {
         // Check if the authenticated user is an admin
-        return auth()->user()?->hasRole('Admin') ?? false;
+        return true;
     }
     /**
      * Get the validation rules that apply to the request.

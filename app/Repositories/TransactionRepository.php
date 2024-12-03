@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
 use App\Models\Customer;
 use App\Models\Transaction;
-use App\Repositories\Contracts\TransactionRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class TransactionRepository implements TransactionRepositoryInterface
+class TransactionRepository
 {
 
     public function create(array $data): Transaction

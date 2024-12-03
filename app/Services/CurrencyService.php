@@ -1,19 +1,19 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\Contracts\CurrencyRepositoryInterface;
+use App\Repositories\CurrencyRepository;
 
 class CurrencyService
 {
-    protected CurrencyRepositoryInterface $currencyRepositoryInterface;
+    protected CurrencyRepository $currencyRepository;
 
-    public function __construct(CurrencyRepositoryInterface $currencyRepositoryInterface)
+    public function __construct(CurrencyRepository $currencyRepository)
     {
-        $this->currencyRepositoryInterface = $currencyRepositoryInterface;
+        $this->currencyRepository = $currencyRepository;
     }
 
     public function getAllCurrencies()
     {
-        return $this->currencyRepositoryInterface->getAll();
+        return $this->currencyRepository->getAll();
     }
 }

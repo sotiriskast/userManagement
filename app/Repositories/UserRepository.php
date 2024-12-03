@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository
 {
     public function getAllPaginated(int $perPage = 10): LengthAwarePaginator
     {

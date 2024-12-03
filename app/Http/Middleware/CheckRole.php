@@ -18,13 +18,21 @@ class CheckRole
         if (!auth()->check()) {
             abort(403, 'You do not have permission to access this page.');
         }
+
+        // Always allow super admin full access
         if (auth()->user()->hasRole('super_admin')) {
             return $next($request);
         }
-        $role = strtolower($role);
+
+        // Normalize role comparison
         if (!auth()->user()->hasRole($role)) {
+            \Log::info('Role Check Failed', [
+                'required_role' => $role,
+                'user_roles' => auth()->user()->roles->pluck('name')
+            ]);
             abort(403, 'You do not have permission to access this page.');
         }
+
         return $next($request);
     }
 }

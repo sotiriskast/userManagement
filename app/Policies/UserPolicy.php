@@ -16,7 +16,7 @@ class UserPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('super_admin') || $user->hasRole('admin');
+        return  $user->hasRole('admin');
     }
 
     public function view(User $user, User $model): bool

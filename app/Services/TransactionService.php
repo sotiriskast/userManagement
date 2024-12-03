@@ -2,42 +2,42 @@
 namespace App\Services;
 
 use App\Models\Transaction;
-use App\Repositories\Contracts\TransactionRepositoryInterface;
+use App\Repositories\TransactionRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class TransactionService
 {
-    protected TransactionRepositoryInterface $transactionRepositoryInterface;
+    protected TransactionRepository $transactionRepository;
 
-    public function __construct(TransactionRepositoryInterface $transactionRepositoryInterface)
+    public function __construct(TransactionRepository $transactionRepository)
     {
-        $this->transactionRepositoryInterface = $transactionRepositoryInterface;
+        $this->transactionRepository = $transactionRepository;
     }
     public function createTransaction(array $data): Transaction
     {
-        return $this->transactionRepositoryInterface->create($data);
+        return $this->transactionRepository->create($data);
     }
 
     public function updateTransaction(Transaction $transaction, array $data): Transaction
     {
-        return $this->transactionRepositoryInterface->update($transaction, $data);
+        return $this->transactionRepository->update($transaction, $data);
     }
 
     public function deleteTransaction(Transaction $transaction): void
     {
-        $this->transactionRepositoryInterface->delete($transaction);
+        $this->transactionRepository->delete($transaction);
     }
     public function searchTransactions($filters, $perPage = 10)
     {
-        return $this->transactionRepositoryInterface->search($filters, $perPage);
+        return $this->transactionRepository->search($filters, $perPage);
     }
 
     public function getAllCustomers(): Collection
     {
-        return $this->transactionRepositoryInterface->getAllCustomers();
+        return $this->transactionRepository->getAllCustomers();
     }
     public function getTransactionCountByCountry(): \Illuminate\Support\Collection
     {
-        return $this->transactionRepositoryInterface->getTransactionCountByCountry();
+        return $this->transactionRepository->getTransactionCountByCountry();
     }
 }

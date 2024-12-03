@@ -6,16 +6,20 @@ use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use App\Services\CountryService;
 use App\Services\CustomerService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class CustomerController extends Controller
 {
+    use AuthorizesRequests;
     protected CustomerService $customerService;
     protected CountryService $countryService;
 
     public function __construct(CustomerService $customerService, CountryService $countryService)
     {
+        $this->middleware('auth');
+        $this->authorizeResource(Customer::class, 'transaction');
         $this->customerService = $customerService;
         $this->countryService = $countryService;
     }

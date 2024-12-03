@@ -1,11 +1,10 @@
 <?php
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
 use App\Models\Currency;
-use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-class CurrencyRepository implements CurrencyRepositoryInterface
+class CurrencyRepository
 {
     public function getAll(): Collection
     {

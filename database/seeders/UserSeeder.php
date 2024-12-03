@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
         $superAdminRole = Role::where('name', UserRole::SUPER_ADMIN->value)->first();
         $adminRole = Role::where('name', UserRole::ADMIN->value)->first();
         $userRole = Role::where('name', UserRole::USER->value)->first();
-
         User::factory()->create([
             'name' => fake()->name(),
             'email' => 'root@root.com',
@@ -28,14 +27,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ])->roles()->attach($superAdminRole);
-
         User::factory()->create([
             'name' => fake()->name(),
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-
         ])->roles()->attach($adminRole);
         User::factory()->create([
             'name' => fake()->name(),
@@ -43,9 +40,6 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-
         ])->roles()->attach($userRole);
-
-
     }
 }

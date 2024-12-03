@@ -10,7 +10,7 @@
                 <div class="p-6 bg-gray-100 border-b border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold text-gray-700">Customer List</h3>
-                        <x-role-button role="Admin" href="{{ route('customers.create') }}">
+                        <x-role-button role="admin" href="{{ route('customers.create') }}">
                             + Add Customer
                         </x-role-button>
                     </div>

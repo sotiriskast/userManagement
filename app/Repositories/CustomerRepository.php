@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
 use App\Models\Customer;
-use App\Repositories\Contracts\CustomerRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class CustomerRepository implements CustomerRepositoryInterface
+class CustomerRepository
 {
     public function getAll(): Collection
     {

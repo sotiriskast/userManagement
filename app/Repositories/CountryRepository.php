@@ -1,11 +1,10 @@
 <?php
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
 use App\Models\Country;
-use App\Repositories\Contracts\CountryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-class CountryRepository implements CountryRepositoryInterface
+class CountryRepository
 {
     public function getAll(): Collection
     {

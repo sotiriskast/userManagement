@@ -1,11 +1,10 @@
 <?php
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
 use App\Models\Role;
-use App\Repositories\Contracts\RoleRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-class RoleRepository implements RoleRepositoryInterface
+class RoleRepository
 {
     public function getAll(): Collection
     {

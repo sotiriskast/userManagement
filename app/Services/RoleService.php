@@ -2,16 +2,16 @@
 namespace App\Services;
 
 use App\Models\Role;
-use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Repositories\RoleRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class RoleService
 {
-    protected RoleRepositoryInterface $roleRepositoryInterface;
+    protected RoleRepository $roleRepository;
 
-    public function __construct(RoleRepositoryInterface $roleRepositoryInterface)
+    public function __construct(RoleRepository $roleRepository)
     {
-        $this->roleRepositoryInterface = $roleRepositoryInterface;
+        $this->roleRepository = $roleRepository;
     }
 
     public function getAllRoles(): Collection

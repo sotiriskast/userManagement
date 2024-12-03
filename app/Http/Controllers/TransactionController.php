@@ -22,6 +22,7 @@ class TransactionController extends Controller
     {
         $this->transactionService = $transactionService;
         $this->currencyService = $currencyService;
+        $this->middleware('auth');
         $this->authorizeResource(Transaction::class, 'transaction');
 
     }
