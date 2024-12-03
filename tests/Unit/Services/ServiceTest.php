@@ -6,7 +6,7 @@ use App\Services\CustomerService;
 use App\Models\Customer;
 use Tests\TestCase;
 
-class CustomerServiceTest extends TestCase
+class ServiceTest extends TestCase
 {
     private CustomerService $customerService;
 

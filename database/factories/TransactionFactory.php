@@ -25,6 +25,7 @@ class TransactionFactory extends Factory
         return [
             'amount' => $this->faker->randomFloat(2, 10, 10000),
             'currency_id' => Currency::query()->inRandomOrder()->first()->id,
+            'customer_id' => Customer::query()->inRandomOrder()->first()->id,
             'transaction_date' => $this->faker->dateTimeBetween('-1 year'),
         ];
     }
